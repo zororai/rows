@@ -16,10 +16,11 @@ class GalleryImageController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         return view('admin.gallery.create', [
             'categories' => $this->categories(),
+            'return' => $this->returnPath($request),
         ]);
     }
 
@@ -47,14 +48,15 @@ class GalleryImageController extends Controller
 
         $message = count($files) === 1 ? 'Image uploaded.' : count($files).' images uploaded.';
 
-        return redirect()->route('admin.gallery.index')->with('status', $message);
+        return redirect($this->returnPath($request) ?? route('admin.gallery.index'))->with('status', $message);
     }
 
-    public function edit(GalleryImage $gallery)
+    public function edit(Request $request, GalleryImage $gallery)
     {
         return view('admin.gallery.edit', [
             'image' => $gallery,
             'categories' => $this->categories(),
+            'return' => $this->returnPath($request),
         ]);
     }
 
@@ -79,7 +81,7 @@ class GalleryImageController extends Controller
 
         $gallery->update($data);
 
-        return redirect()->route('admin.gallery.index')->with('status', 'Image updated.');
+        return redirect($this->returnPath($request) ?? route('admin.gallery.index'))->with('status', 'Image updated.');
     }
 
     public function destroy(GalleryImage $gallery)
@@ -88,6 +90,21 @@ class GalleryImageController extends Controller
         $gallery->delete();
 
         return back()->with('status', 'Image deleted.');
+    }
+
+    /**
+     * Where to send the admin after saving, e.g. back to the public /gallery page.
+     * Only same-site paths are accepted so the parameter can't be used as an open redirect.
+     */
+    private function returnPath(Request $request): ?string
+    {
+        $path = $request->input('return');
+
+        if (! is_string($path) || ! str_starts_with($path, '/') || str_starts_with($path, '//') || str_contains($path, '\\')) {
+            return null;
+        }
+
+        return $path;
     }
 
     private function categories()

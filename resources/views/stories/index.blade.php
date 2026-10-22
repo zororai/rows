@@ -11,6 +11,19 @@
 
     <section class="section">
         <div class="container">
+            @if (auth()->user()?->is_admin)
+                <div class="admin-cta mb-5">
+                    <div>
+                        <strong>Share a new story</strong>
+                        <span class="d-block text-muted-2 small">Only administrators can see this.</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ route('admin.stories.index') }}" class="btn-outline-green">Manage stories</a>
+                        <a href="{{ route('admin.stories.create') }}" class="btn-rose"><i class="bi-plus-lg"></i> Add a story</a>
+                    </div>
+                </div>
+            @endif
+
             @if ($stories->isEmpty())
                 <p class="text-center text-muted-2">No stories have been published yet. Please check back soon.</p>
             @else

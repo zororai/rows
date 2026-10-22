@@ -76,6 +76,18 @@ img { max-width: 100%; }
 .link-arrow i { transition: transform .2s; }
 .link-arrow:hover i { transform: translateX(4px); }
 
+/* Admin shortcuts (only rendered for logged-in admins) */
+.admin-bar { background: #111; color: rgba(255,255,255,.8); font-size: .82rem; padding: .45rem 0; }
+.admin-bar a, .admin-bar button { color: var(--gold-light); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.admin-bar a:hover, .admin-bar button:hover { color: #fff; }
+.admin-tools { position: absolute; top: 10px; right: 10px; display: flex; gap: 6px; z-index: 3; }
+.admin-tools form { margin: 0; }
+.admin-tools a, .admin-tools button { display: inline-flex; align-items: center; gap: .35rem; height: 34px; padding: 0 .8rem; border-radius: 999px; border: 0; font-size: .82rem; font-weight: 700; text-decoration: none; background: rgba(255,255,255,.95); color: var(--green); box-shadow: 0 6px 16px -6px rgba(0,0,0,.45); cursor: pointer; }
+.admin-tools a:hover { background: var(--green); color: #fff; }
+.admin-tools .danger { color: var(--rose); padding: 0 .7rem; }
+.admin-tools .danger:hover { background: var(--rose); color: #fff; }
+.admin-cta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; background: #fff; border: 1px dashed var(--gold); border-radius: var(--radius); }
+
 /* Top bar + navigation */
 .topbar { background: var(--green-deep); color: rgba(255,255,255,.8); font-size: .85rem; padding: .5rem 0; border-bottom: 1px solid rgba(201,164,92,.35); }
 .topbar i { color: var(--gold-light); }

@@ -5,6 +5,7 @@
 @section('content')
     <form method="POST" action="{{ route('admin.gallery.store') }}" enctype="multipart/form-data">
         @csrf
+        @if ($return)<input type="hidden" name="return" value="{{ $return }}">@endif
         <div class="row g-4">
             <div class="col-lg-7">
                 <div class="panel panel-body">
@@ -42,7 +43,7 @@
                 </div>
                 <div class="d-grid gap-2">
                     <button class="btn btn-rose btn-lg"><i class="bi-cloud-arrow-up"></i> Upload</button>
-                    <a href="{{ route('admin.gallery.index') }}" class="btn btn-light">Cancel</a>
+                    <a href="{{ $return ?? route('admin.gallery.index') }}" class="btn btn-light">Cancel</a>
                 </div>
             </div>
         </div>

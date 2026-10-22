@@ -6,6 +6,7 @@
     <form method="POST" action="{{ route('admin.gallery.update', $image) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+        @if ($return)<input type="hidden" name="return" value="{{ $return }}">@endif
         <div class="row g-4">
             <div class="col-lg-6">
                 <div class="panel panel-body">
@@ -45,7 +46,7 @@
                 </div>
                 <div class="d-grid gap-2">
                     <button class="btn btn-primary btn-lg"><i class="bi-check-lg"></i> Save changes</button>
-                    <a href="{{ route('admin.gallery.index') }}" class="btn btn-light">Cancel</a>
+                    <a href="{{ $return ?? route('admin.gallery.index') }}" class="btn btn-light">Cancel</a>
                 </div>
             </div>
         </div>

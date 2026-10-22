@@ -22,6 +22,23 @@
     @stack('head')
 </head>
 <body>
+    @if (auth()->user()?->is_admin)
+        <div class="admin-bar">
+            <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span><i class="bi-shield-lock me-1"></i> Logged in as {{ auth()->user()->name }}</span>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ route('admin.dashboard') }}"><i class="bi-speedometer2 me-1"></i>Dashboard</a>
+                    <a href="{{ route('admin.stories.create') }}"><i class="bi-plus-circle me-1"></i>New story</a>
+                    <a href="{{ route('admin.gallery.create') }}"><i class="bi-cloud-arrow-up me-1"></i>Upload photos</a>
+                    <form method="POST" action="{{ route('admin.logout') }}" class="d-inline">
+                        @csrf
+                        <button type="submit"><i class="bi-box-arrow-right me-1"></i>Log out</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="topbar d-none d-md-block">
         <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex gap-4">

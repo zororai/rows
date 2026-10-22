@@ -43,6 +43,65 @@ class SiteTest extends TestCase
         $this->get('/stories/'.$draft->slug)->assertNotFound();
     }
 
+    public function test_admin_shortcuts_only_show_for_admins(): void
+    {
+        $story = Story::first();
+
+        $this->get('/stories')->assertDontSee('Add a story')->assertDontSee('/admin/stories/create');
+        $this->get('/stories/'.$story->slug)->assertDontSee('Edit this story');
+
+        $this->actingAs(User::factory()->create());
+        $this->get('/stories')->assertDontSee('Add a story');
+
+        $this->actingAs($this->admin());
+        $this->get('/stories')->assertSee('Add a story')->assertSee(route('admin.stories.create'));
+        $this->get('/stories/'.$story->slug)->assertSee('Edit this story')->assertSee(route('admin.stories.edit', $story));
+    }
+
+    public function test_gallery_admin_controls_only_show_for_admins(): void
+    {
+        $image = GalleryImage::first();
+
+        $this->get('/gallery')
+            ->assertDontSee('Upload photos')
+            ->assertDontSee('class="admin-tools"', false)
+            ->assertDontSee(route('admin.gallery.destroy', $image));
+
+        $this->actingAs($this->admin());
+        $this->get('/gallery')
+            ->assertSee('Upload photos')
+            ->assertSee(route('admin.gallery.edit', ['gallery' => $image, 'return' => '/gallery']), false)
+            ->assertSee(route('admin.gallery.destroy', $image));
+    }
+
+    public function test_admin_returns_to_public_gallery_after_upload_and_edit(): void
+    {
+        $this->actingAs($this->admin());
+        $image = GalleryImage::first();
+
+        $this->put("/admin/gallery/{$image->id}", ['title' => 'Prize giving', 'return' => '/gallery?category=Awards'])
+            ->assertRedirect('/gallery?category=Awards');
+        $this->assertSame('Prize giving', $image->fresh()->title);
+
+        $this->post('/admin/gallery', ['images' => [UploadedFile::fake()->image('new.jpg')], 'return' => '/gallery'])
+            ->assertRedirect('/gallery');
+        $this->get('/gallery')->assertSee('Image uploaded.');
+
+        foreach (GalleryImage::where('image', 'like', 'uploads/%')->get() as $uploaded) {
+            $this->delete("/admin/gallery/{$uploaded->id}", [], ['HTTP_REFERER' => url('/gallery')])->assertRedirect('/gallery');
+        }
+    }
+
+    public function test_return_parameter_cannot_redirect_off_site(): void
+    {
+        $this->actingAs($this->admin());
+        $image = GalleryImage::first();
+
+        foreach (['https://evil.example', '//evil.example', '/\\evil.example'] as $bad) {
+            $this->put("/admin/gallery/{$image->id}", ['title' => 'x', 'return' => $bad])->assertRedirect('/admin/gallery');
+        }
+    }
+
     public function test_admin_requires_login(): void
     {
         $this->get('/admin')->assertRedirect('/admin/login');

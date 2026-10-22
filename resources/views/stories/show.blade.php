@@ -7,7 +7,12 @@
     <section class="section-sm">
         <div class="container">
             <div class="article">
-                <a href="{{ route('stories.index') }}" class="link-arrow mb-4"><i class="bi-arrow-left"></i> All stories</a>
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                    <a href="{{ route('stories.index') }}" class="link-arrow"><i class="bi-arrow-left"></i> All stories</a>
+                    @if (auth()->user()?->is_admin)
+                        <a href="{{ route('admin.stories.edit', $story) }}" class="btn-outline-green"><i class="bi-pencil"></i> Edit this story</a>
+                    @endif
+                </div>
                 <span class="eyebrow d-flex">{{ $story->published_at?->format('j F Y') }}</span>
                 <h1 class="mb-4" style="font-size: clamp(2rem, 4vw, 3rem)">{{ $story->title }}</h1>
                 @if ($story->image)
