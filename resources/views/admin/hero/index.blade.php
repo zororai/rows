@@ -32,6 +32,7 @@
                             @else
                                 <span class="badge text-bg-secondary">Hidden</span>
                             @endif
+                            <span class="badge text-bg-light border"><i class="bi-magic"></i> {{ \App\Models\HeroSlide::TRANSITIONS[$slide->transition] ?? 'Fade' }}</span>
                         </div>
                         <div class="fw-semibold fs-5">{{ str_replace('*', '', $slide->title) }}</div>
                         @if ($slide->subtitle)

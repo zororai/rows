@@ -2,10 +2,10 @@
 
 @section('content')
     {{-- Hero --}}
-    <section id="hero" class="hero carousel slide carousel-fade" @if ($slides->count() > 1) data-bs-ride="carousel" data-bs-interval="7000" @endif aria-label="Welcome banner">
+    <section id="hero" class="hero carousel slide" data-fx="{{ $slides->first()->transition }}" @if ($slides->count() > 1) data-bs-ride="carousel" data-bs-interval="7000" @endif aria-label="Welcome banner">
         <div class="carousel-inner">
             @foreach ($slides as $slide)
-                <div @class(['carousel-item', 'active' => $loop->first])>
+                <div @class(['carousel-item', 'active' => $loop->first]) data-fx="{{ $slide->transition }}">
                     <div class="hero-bg" style="background-image: url('{{ $slide->image_url }}')"></div>
                     <div class="container hero-copy">
                         <div class="hero-badge"><i class="bi-patch-check-fill"></i> Registered welfare organisation · PVO 3/2004</div>
@@ -292,6 +292,12 @@
         var hero = document.getElementById('hero');
         if (!hero || !window.bootstrap || hero.querySelectorAll('.carousel-item').length < 2) return;
         var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Each slide picks the effect it arrives with; Bootstrap fires this before it starts moving.
+        hero.addEventListener('slide.bs.carousel', function (e) {
+            hero.dataset.fx = e.relatedTarget.dataset.fx || 'fade';
+        });
+
         bootstrap.Carousel.getOrCreateInstance(hero, { interval: 7000, pause: 'hover', ride: reduceMotion ? false : 'carousel' });
     })();
 </script>

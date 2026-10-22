@@ -140,6 +140,31 @@ class SiteTest extends TestCase
         $this->assertFileDoesNotExist(public_path($image));
     }
 
+    public function test_banner_slide_transition_is_saved_and_rendered(): void
+    {
+        $this->actingAs($this->admin());
+
+        $this->post('/admin/hero', [
+            'image' => UploadedFile::fake()->image('hero.jpg', 1920, 1080),
+            'title' => 'Wipe slide',
+            'transition' => 'wipe',
+            'is_active' => '1',
+            'sort_order' => 5,
+        ])->assertRedirect('/admin/hero');
+
+        $slide = HeroSlide::where('title', 'Wipe slide')->firstOrFail();
+        $this->assertSame('wipe', $slide->transition);
+        $this->get('/')->assertSee('data-fx="wipe"', false);
+        $this->get('/admin/hero')->assertSee('Curtain wipe');
+
+        $this->put("/admin/hero/{$slide->id}", ['title' => 'Wipe slide', 'transition' => 'explode', 'is_active' => '1'])
+            ->assertSessionHasErrors('transition');
+        $this->put("/admin/hero/{$slide->id}", ['title' => 'Wipe slide', 'is_active' => '1']);
+        $this->assertSame('fade', $slide->fresh()->transition);
+
+        $this->delete("/admin/hero/{$slide->id}");
+    }
+
     public function test_banner_headline_html_is_escaped(): void
     {
         HeroSlide::query()->update(['title' => '<script>alert(1)</script> *Hi*']);

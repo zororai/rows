@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HeroSlide;
 use App\Support\ImageUpload;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class HeroSlideController extends Controller
 {
@@ -70,11 +71,13 @@ class HeroSlideController extends Controller
             'image' => [$imageRequired ? 'required' : 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'title' => ['required', 'string', 'max:120'],
             'subtitle' => ['nullable', 'string', 'max:300'],
+            'transition' => ['nullable', Rule::in(array_keys(HeroSlide::TRANSITIONS))],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
 
         unset($data['image']);
         $data['sort_order'] ??= 0;
+        $data['transition'] ??= 'fade';
         $data['is_active'] = $request->boolean('is_active');
 
         return $data;

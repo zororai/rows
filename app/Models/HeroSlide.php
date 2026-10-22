@@ -7,7 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class HeroSlide extends Model
 {
-    protected $fillable = ['image', 'title', 'subtitle', 'is_active', 'sort_order'];
+    /** Effect used when a slide comes into view; styled in public/css/site.css. */
+    public const TRANSITIONS = [
+        'fade' => 'Fade',
+        'slide' => 'Slide',
+        'zoom' => 'Zoom',
+        'wipe' => 'Curtain wipe',
+    ];
+
+    protected $fillable = ['image', 'title', 'subtitle', 'transition', 'is_active', 'sort_order'];
+
+    protected $attributes = [
+        'transition' => 'fade',
+    ];
 
     protected function casts(): array
     {
