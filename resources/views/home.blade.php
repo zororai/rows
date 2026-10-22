@@ -159,7 +159,7 @@
                     <img src="{{ asset('images/img-8.png') }}" alt="Dr. Fatima Maruta, founder">
                 </div>
                 <div class="col-lg-7">
-                    <span class="eyebrow" style="color:#ffb3c0">A word from our founder</span>
+                    <span class="eyebrow">A word from our founder</span>
                     <blockquote>"I believe in a helping hand. As a family, we have the passion to see a better future for forgotten, unwanted children and to transform them into tomorrow's champions. This is done by the grace of the Almighty God."</blockquote>
                     <div class="name">Dr. Fatima Maruta</div>
                     <div class="role mb-4">Founding Director</div>

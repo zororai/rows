@@ -12,13 +12,13 @@
         @font-face { font-family: Metropolis; src: url({{ asset('fonts/Metropolis/Metropolis-Regular.woff2') }}) format("woff2"); font-weight: 400; }
         @font-face { font-family: Metropolis; src: url({{ asset('fonts/Metropolis/Metropolis-SemiBold.woff2') }}) format("woff2"); font-weight: 600; }
         body { font-family: Metropolis, system-ui, sans-serif; min-height: 100vh; display: grid; place-items: center; padding: 16px;
-               background: linear-gradient(135deg, #083d22 0%, #0d5c34 60%, #a8142d 140%); }
-        .login-card { width: 100%; max-width: 420px; background: #fff; border-radius: 20px; padding: 2.5rem 2rem; box-shadow: 0 30px 60px -20px rgba(0,0,0,.45); }
-        .btn-go { background: #0d5c34; color: #fff; padding: .75rem; border-radius: 10px; font-weight: 600; }
-        .btn-go:hover { background: #083d22; color: #fff; }
+               background: radial-gradient(90% 80% at 100% 100%, rgba(168,24,47,.55) 0%, rgba(168,24,47,0) 60%), radial-gradient(120% 120% at 0% 0%, #13573f 0%, #08291f 50%, #051b14 100%); }
+        .login-card { width: 100%; max-width: 420px; background: #fff; border-radius: 20px; padding: 2.5rem 2rem; box-shadow: 0 30px 60px -20px rgba(0,0,0,.55); border-top: 3px solid #c9a45c; }
+        .btn-go { background: linear-gradient(135deg, #13573f 0%, #0e4a36 50%, #08291f 100%); color: #fff; padding: .75rem; border-radius: 10px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
+        .btn-go:hover { filter: brightness(1.12); color: #fff; }
         .form-control { padding: .7rem .9rem; border-radius: 10px; }
-        .form-control:focus { border-color: #0d5c34; box-shadow: 0 0 0 .2rem rgba(13,92,52,.15); }
-        .form-check-input:checked { background-color: #0d5c34; border-color: #0d5c34; }
+        .form-control:focus { border-color: #b8924a; box-shadow: 0 0 0 .2rem rgba(184,146,74,.18); }
+        .form-check-input:checked { background-color: #0e4a36; border-color: #0e4a36; }
     </style>
 </head>
 <body>

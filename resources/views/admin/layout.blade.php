@@ -11,15 +11,17 @@
     <style>
         @font-face { font-family: Metropolis; src: url({{ asset('fonts/Metropolis/Metropolis-Regular.woff2') }}) format("woff2"); font-weight: 400; }
         @font-face { font-family: Metropolis; src: url({{ asset('fonts/Metropolis/Metropolis-SemiBold.woff2') }}) format("woff2"); font-weight: 600; }
-        :root { --green: #0d5c34; --green-dark: #083d22; --rose: #d21f3c; --line: #e5e7eb; }
+        :root { --green: #0e4a36; --green-dark: #08291f; --rose: #a8182f; --gold: #b8924a; --gold-light: #e2c98f; --line: #e6e3dc; }
         body { font-family: Metropolis, system-ui, sans-serif; background: #f5f6f4; color: #1d2420; }
-        .admin-sidebar { width: 250px; background: var(--green-dark); color: #fff; position: fixed; inset: 0 auto 0 0; padding: 1.25rem 1rem; display: flex; flex-direction: column; z-index: 1040; transition: transform .25s; }
+        .admin-sidebar { border-right: 1px solid rgba(201,164,92,.35); }
+        .admin-sidebar { width: 250px; background: radial-gradient(140% 100% at 0% 0%, #13573f 0%, #08291f 55%, #051b14 100%); color: #fff; position: fixed; inset: 0 auto 0 0; padding: 1.25rem 1rem; display: flex; flex-direction: column; z-index: 1040; transition: transform .25s; }
         .admin-sidebar .brand { display: flex; gap: .65rem; align-items: center; color: #fff; text-decoration: none; font-weight: 600; margin-bottom: 2rem; }
         .admin-sidebar .brand img { width: 40px; }
-        .admin-sidebar .brand small { display: block; color: #ffb3c0; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
+        .admin-sidebar .brand small { display: block; color: var(--gold-light); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
         .admin-sidebar .nav-link { color: rgba(255,255,255,.75); border-radius: 10px; padding: .65rem .85rem; display: flex; gap: .7rem; align-items: center; font-weight: 600; }
         .admin-sidebar .nav-link:hover { color: #fff; background: rgba(255,255,255,.08); }
-        .admin-sidebar .nav-link.active { color: #fff; background: var(--rose); }
+        .admin-sidebar .nav-link.active { color: #fff; background: linear-gradient(135deg, #bd2139, #7c0f22); box-shadow: inset 0 1px 0 rgba(255,255,255,.18); }
+        .admin-sidebar .nav-link.active i { color: var(--gold-light); }
         .admin-sidebar .section-label { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.45); margin: 1.25rem .85rem .5rem; }
         .admin-main { margin-left: 250px; min-height: 100vh; }
         .admin-topbar { background: #fff; border-bottom: 1px solid var(--line); padding: .85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
@@ -27,12 +29,12 @@
         .panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; }
         .panel-body { padding: 1.5rem; }
         .btn-primary { --bs-btn-bg: var(--green); --bs-btn-border-color: var(--green); --bs-btn-hover-bg: var(--green-dark); --bs-btn-hover-border-color: var(--green-dark); --bs-btn-active-bg: var(--green-dark); }
-        .btn-rose { background: var(--rose); color: #fff; border-color: var(--rose); }
-        .btn-rose:hover { background: #a8142d; color: #fff; }
-        .form-control:focus, .form-select:focus { border-color: var(--green); box-shadow: 0 0 0 .2rem rgba(13,92,52,.15); }
+        .btn-rose { background: linear-gradient(135deg, #bd2139, #a8182f 45%, #7c0f22); color: #fff; border-color: #7c0f22; }
+        .btn-rose:hover { filter: brightness(1.08); color: #fff; }
+        .form-control:focus, .form-select:focus { border-color: var(--gold); box-shadow: 0 0 0 .2rem rgba(184,146,74,.18); }
         .form-check-input:checked { background-color: var(--green); border-color: var(--green); }
         .stat-tile { padding: 1.25rem 1.5rem; display: flex; gap: 1rem; align-items: center; }
-        .stat-tile .icon { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; font-size: 1.35rem; background: #e6f1ea; color: var(--green); }
+        .stat-tile .icon { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; font-size: 1.25rem; background: radial-gradient(120% 140% at 0% 0%, #13573f, #08291f); color: var(--gold-light); }
         .stat-tile .num { font-size: 1.75rem; font-weight: 600; line-height: 1; }
         .thumb { width: 64px; height: 48px; object-fit: cover; border-radius: 8px; background: #eee; }
         .table > :not(caption) > * > * { padding: .85rem 1rem; vertical-align: middle; }
