@@ -28,3 +28,6 @@ Thumbs.db
 /public/uploads/**
 !/public/uploads/**/
 !/public/uploads/**/.gitkeep
+
+# Private admin credentials, never commit
+/ADMIN-LOGIN.md

@@ -35,6 +35,25 @@ ADMIN_PASSWORD="ChangeMe123!"
 
 Uploaded files are saved in `public/uploads/`, so `storage:link` isn't needed. Back up this folder along with `database/database.sqlite`.
 
+## Deploying with Hostinger's GitHub deployment
+
+The repo deploys straight into `public_html`. The root `.htaccess` sends all traffic into `public/`, so `.env`, the database and the source code can't be downloaded. There is no Node/npm build step; the CSS and JS in `public/` are used as they are.
+
+After the first deployment, open SSH (hPanel → Advanced → SSH Access) and run, once:
+
+```bash
+cd ~/domains/yourdomain.com/public_html
+php -v                                        # must be 8.3 or newer
+composer install --no-dev --optimize-autoloader
+cp .env.example .env && php artisan key:generate
+# edit .env: APP_ENV=production, APP_DEBUG=false, APP_URL=https://yourdomain.com, ADMIN_PASSWORD=...
+touch database/database.sqlite
+php artisan migrate --seed --force
+php artisan config:cache && php artisan route:cache && php artisan view:cache
+```
+
+After each later redeploy, run `composer install --no-dev --optimize-autoloader && php artisan migrate --force && php artisan config:cache`.
+
 ## Deploying to cPanel / shared hosting
 
 1. Upload the whole project **outside** `public_html`, e.g. `~/rose-of-sharon`.
