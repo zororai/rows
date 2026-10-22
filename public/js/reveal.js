@@ -96,7 +96,7 @@
             if (start === null) start = now;
             var t = Math.min((now - start) / duration, 1);
             var eased = 1 - Math.pow(1 - t, 3);
-            el.textContent = Math.round(from + (target - from) * eased).toLocaleString();
+            el.textContent = String(Math.round(from + (target - from) * eased));
             if (t < 1) requestAnimationFrame(step);
         }
         requestAnimationFrame(step);

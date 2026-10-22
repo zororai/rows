@@ -29,7 +29,7 @@
                         <div class="stat-label">Children's homes</div>
                     </div>
                     <div class="col-6 col-md-3 stat">
-                        <div class="stat-num"><span data-count-to="250">250</span><span>+</span></div>
+                        <div class="stat-num"><span data-count-to="250">250</span><span class="plus">+</span></div>
                         <div class="stat-label">Children supported</div>
                     </div>
                     <div class="col-6 col-md-3 stat">
