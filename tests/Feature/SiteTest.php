@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\GalleryImage;
+use App\Models\HeroSlide;
 use App\Models\Story;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -100,6 +101,77 @@ class SiteTest extends TestCase
         foreach (['https://evil.example', '//evil.example', '/\\evil.example'] as $bad) {
             $this->put("/admin/gallery/{$image->id}", ['title' => 'x', 'return' => $bad])->assertRedirect('/admin/gallery');
         }
+    }
+
+    public function test_home_banner_shows_seeded_slide_with_highlight(): void
+    {
+        $this->get('/')->assertSee('Making <em>champions</em> out of the forgotten.', false);
+    }
+
+    public function test_admin_can_add_edit_and_delete_banner_slides(): void
+    {
+        $this->actingAs($this->admin());
+        $this->get('/admin/hero')->assertOk();
+        $this->get('/admin/hero/create')->assertOk();
+
+        $this->post('/admin/hero', [
+            'image' => UploadedFile::fake()->image('hero.jpg', 1920, 1080),
+            'title' => 'Hope for *every* child',
+            'subtitle' => 'A brand new banner',
+            'is_active' => '1',
+            'sort_order' => 1,
+        ])->assertRedirect('/admin/hero');
+
+        $slide = HeroSlide::where('title', 'Hope for *every* child')->firstOrFail();
+        $this->assertFileExists(public_path($slide->image));
+
+        $this->get('/')
+            ->assertSee('Hope for <em>every</em> child', false)
+            ->assertSee('A brand new banner')
+            ->assertSee('data-bs-ride="carousel"', false);
+
+        $this->get("/admin/hero/{$slide->id}/edit")->assertOk();
+        $this->put("/admin/hero/{$slide->id}", ['title' => 'Hidden slide', 'is_active' => '0'])->assertRedirect('/admin/hero');
+        $this->get('/')->assertDontSee('Hidden slide')->assertDontSee('data-bs-ride="carousel"', false);
+
+        $image = $slide->image;
+        $this->delete("/admin/hero/{$slide->id}")->assertRedirect();
+        $this->assertDatabaseMissing('hero_slides', ['id' => $slide->id]);
+        $this->assertFileDoesNotExist(public_path($image));
+    }
+
+    public function test_banner_headline_html_is_escaped(): void
+    {
+        HeroSlide::query()->update(['title' => '<script>alert(1)</script> *Hi*']);
+
+        $this->get('/')
+            ->assertDontSee('<script>alert(1)</script>', false)
+            ->assertSee('&lt;script&gt;alert(1)&lt;/script&gt; <em>Hi</em>', false);
+    }
+
+    public function test_home_falls_back_to_default_banner_when_no_slide_is_active(): void
+    {
+        HeroSlide::query()->update(['is_active' => false]);
+
+        $this->get('/')->assertOk()->assertSee('Making <em>champions</em> out of the forgotten.', false);
+    }
+
+    public function test_banner_slide_requires_an_image(): void
+    {
+        $this->actingAs($this->admin());
+
+        $this->post('/admin/hero', ['title' => 'No photo'])->assertSessionHasErrors('image');
+        $this->post('/admin/hero', ['title' => 'x', 'image' => UploadedFile::fake()->create('a.pdf', 10, 'application/pdf')])->assertSessionHasErrors('image');
+    }
+
+    public function test_guests_cannot_manage_the_banner(): void
+    {
+        $slide = HeroSlide::first();
+
+        $this->get('/admin/hero')->assertRedirect('/admin/login');
+        $this->delete("/admin/hero/{$slide->id}")->assertRedirect('/admin/login');
+        $this->get('/')->assertDontSee('Edit banner');
+        $this->assertDatabaseHas('hero_slides', ['id' => $slide->id]);
     }
 
     public function test_admin_requires_login(): void

@@ -92,21 +92,6 @@ class GalleryImageController extends Controller
         return back()->with('status', 'Image deleted.');
     }
 
-    /**
-     * Where to send the admin after saving, e.g. back to the public /gallery page.
-     * Only same-site paths are accepted so the parameter can't be used as an open redirect.
-     */
-    private function returnPath(Request $request): ?string
-    {
-        $path = $request->input('return');
-
-        if (! is_string($path) || ! str_starts_with($path, '/') || str_starts_with($path, '//') || str_contains($path, '\\')) {
-            return null;
-        }
-
-        return $path;
-    }
-
     private function categories()
     {
         return GalleryImage::whereNotNull('category')->distinct()->orderBy('category')->pluck('category');

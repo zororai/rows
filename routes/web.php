@@ -47,5 +47,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [Admin\AuthController::class, 'destroy'])->name('logout');
         Route::resource('stories', Admin\StoryController::class)->except('show');
         Route::resource('gallery', Admin\GalleryImageController::class)->except('show');
+        Route::resource('hero', Admin\HeroSlideController::class)->except('show');
     });
 });

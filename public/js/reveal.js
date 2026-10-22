@@ -25,7 +25,6 @@
     // selector -> animation. Order matters: earlier rules win, and an element
     // inside an already-tagged element is skipped so nested items don't double-animate.
     var AUTO = [
-        ['.hero .container > *', 'up'],
         ['.page-header .container > *', 'up'],
         ['.stats-card', 'up'],
         ['.founder img', 'left'],

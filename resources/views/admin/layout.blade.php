@@ -64,6 +64,7 @@
             <div class="section-label">Content</div>
             <a class="nav-link @if(request()->routeIs('admin.stories.*')) active @endif" href="{{ route('admin.stories.index') }}"><i class="bi-journal-richtext"></i> Stories</a>
             <a class="nav-link @if(request()->routeIs('admin.gallery.*')) active @endif" href="{{ route('admin.gallery.index') }}"><i class="bi-images"></i> Gallery</a>
+            <a class="nav-link @if(request()->routeIs('admin.hero.*')) active @endif" href="{{ route('admin.hero.index') }}"><i class="bi-easel"></i> Home banner</a>
             <div class="section-label">Website</div>
             <a class="nav-link" href="{{ route('home') }}" target="_blank"><i class="bi-box-arrow-up-right"></i> View site</a>
         </nav>

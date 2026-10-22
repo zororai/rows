@@ -2,17 +2,43 @@
 
 @section('content')
     {{-- Hero --}}
-    <section class="hero">
-        <div class="hero-bg" style="background-image: url('{{ asset('images/DSC_0026.jpg') }}')"></div>
-        <div class="container">
-            <div class="hero-badge"><i class="bi-patch-check-fill"></i> Registered welfare organisation · PVO 3/2004</div>
-            <h1>Making <em>champions</em> out of the forgotten.</h1>
-            <p>Since 2004, Rose of Sharon has given orphaned, abandoned and neglected children in Zimbabwe a home, a family, an education and a future.</p>
-            <div class="d-flex flex-wrap gap-3 mt-4">
-                <a href="{{ route('donate') }}" class="btn-rose"><i class="bi-heart-fill"></i> Donate today</a>
-                <a href="{{ route('stories.index') }}" class="btn-outline-light-2">Read their stories <i class="bi-arrow-right"></i></a>
-            </div>
+    <section id="hero" class="hero carousel slide carousel-fade" @if ($slides->count() > 1) data-bs-ride="carousel" data-bs-interval="7000" @endif aria-label="Welcome banner">
+        <div class="carousel-inner">
+            @foreach ($slides as $slide)
+                <div @class(['carousel-item', 'active' => $loop->first])>
+                    <div class="hero-bg" style="background-image: url('{{ $slide->image_url }}')"></div>
+                    <div class="container hero-copy">
+                        <div class="hero-badge"><i class="bi-patch-check-fill"></i> Registered welfare organisation · PVO 3/2004</div>
+                        @if ($loop->first)
+                            <h1>{!! $slide->title_html !!}</h1>
+                        @else
+                            <h2 class="h1">{!! $slide->title_html !!}</h2>
+                        @endif
+                        @if ($slide->subtitle)
+                            <p>{{ $slide->subtitle }}</p>
+                        @endif
+                        <div class="d-flex flex-wrap gap-3 mt-4">
+                            <a href="{{ route('donate') }}" class="btn-rose"><i class="bi-heart-fill"></i> Donate today</a>
+                            <a href="{{ route('stories.index') }}" class="btn-outline-light-2">Read their stories <i class="bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
+
+        @if ($slides->count() > 1)
+            <div class="carousel-indicators">
+                @foreach ($slides as $slide)
+                    <button type="button" data-bs-target="#hero" data-bs-slide-to="{{ $loop->index }}" @class(['active' => $loop->first]) @if ($loop->first) aria-current="true" @endif aria-label="Slide {{ $loop->iteration }}"></button>
+                @endforeach
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#hero" data-bs-slide="prev" aria-label="Previous slide"><i class="bi-chevron-left"></i></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#hero" data-bs-slide="next" aria-label="Next slide"><i class="bi-chevron-right"></i></button>
+        @endif
+
+        @if (auth()->user()?->is_admin)
+            <a href="{{ route('admin.hero.index') }}" class="hero-admin-edit"><i class="bi-pencil"></i> Edit banner</a>
+        @endif
     </section>
 
     {{-- Impact numbers --}}
@@ -257,3 +283,16 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+    // Start the banner slideshow straight away rather than waiting for window "load"
+    // (which slow images or fonts can delay), and keep it still for reduced-motion users.
+    (function () {
+        var hero = document.getElementById('hero');
+        if (!hero || !window.bootstrap || hero.querySelectorAll('.carousel-item').length < 2) return;
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        bootstrap.Carousel.getOrCreateInstance(hero, { interval: 7000, pause: 'hover', ride: reduceMotion ? false : 'carousel' });
+    })();
+</script>
+@endpush
