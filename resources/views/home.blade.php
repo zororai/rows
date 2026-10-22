@@ -21,19 +21,19 @@
             <div class="stats-card">
                 <div class="row g-0">
                     <div class="col-6 col-md-3 stat">
-                        <div class="stat-num">2004</div>
+                        <div class="stat-num" data-count-to="2004" data-count-from="1980">2004</div>
                         <div class="stat-label">Founded</div>
                     </div>
                     <div class="col-6 col-md-3 stat">
-                        <div class="stat-num">5</div>
+                        <div class="stat-num" data-count-to="5">5</div>
                         <div class="stat-label">Children's homes</div>
                     </div>
                     <div class="col-6 col-md-3 stat">
-                        <div class="stat-num">250<span>+</span></div>
+                        <div class="stat-num"><span data-count-to="250">250</span><span>+</span></div>
                         <div class="stat-label">Children supported</div>
                     </div>
                     <div class="col-6 col-md-3 stat">
-                        <div class="stat-num">200</div>
+                        <div class="stat-num" data-count-to="200">200</div>
                         <div class="stat-label">Acres for our future campus</div>
                     </div>
                 </div>

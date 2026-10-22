@@ -7,6 +7,11 @@
     <meta name="google-site-verification" content="3taqyp8f67Z1MI6iZCIJXn9zy4_bjEEOeoMOBDlPcJk">
     <title>@hasSection('title')@yield('title') · @endif Rose of Sharon Welfare Organisation</title>
     <link rel="icon" href="{{ asset('images/logo.png') }}">
+    {{-- Flags JS before first paint so reveal animations don't flash; un-hides everything if reveal.js never loads. --}}
+    <script>
+        document.documentElement.classList.add('js');
+        setTimeout(function () { if (!window.__reveal) document.documentElement.classList.add('reveal-off'); }, 2500);
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,6 +121,7 @@
     </footer>
 
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/reveal.js') }}"></script>
     @stack('scripts')
 </body>
 </html>
