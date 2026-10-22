@@ -110,7 +110,12 @@ img { max-width: 100%; }
 /* Hero */
 /* Hero slideshow (Bootstrap carousel, slides managed in Admin → Home banner) */
 .hero { position: relative; color: #fff; overflow: hidden; background: var(--green-deep); }
-.hero .carousel-item { min-height: min(88vh, 760px); position: relative; }
+/* Full screen: fill the viewport below the header. --hero-offset is the header's height,
+   measured by the script on the home page; the fallbacks cover the first paint. */
+:root { --hero-offset: 115px; }
+@media (max-width: 767.98px) { :root { --hero-offset: 72px; } }
+.hero .carousel-item { position: relative; min-height: calc(100vh - var(--hero-offset)); min-height: calc(100svh - var(--hero-offset)); }
+@media (max-height: 520px) { .hero .carousel-item { min-height: 520px; } }
 .hero .carousel-item.active, .hero .carousel-item-next, .hero .carousel-item-prev { display: flex; align-items: center; }
 .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center 30%; transform: scale(1.03); }
 

@@ -290,7 +290,18 @@
     // (which slow images or fonts can delay), and keep it still for reduced-motion users.
     (function () {
         var hero = document.getElementById('hero');
-        if (!hero || !window.bootstrap || hero.querySelectorAll('.carousel-item').length < 2) return;
+        if (!hero) return;
+
+        // Size the banner to exactly fill the screen below the header (which varies with
+        // screen size and the admin bar).
+        function fitHero() {
+            var offset = hero.getBoundingClientRect().top + window.scrollY;
+            document.documentElement.style.setProperty('--hero-offset', Math.round(offset) + 'px');
+        }
+        fitHero();
+        window.addEventListener('resize', fitHero);
+
+        if (!window.bootstrap || hero.querySelectorAll('.carousel-item').length < 2) return;
         var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // Each slide picks the effect it arrives with; Bootstrap fires this before it starts moving.
